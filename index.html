@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cabeçalho Apple com Seções</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset Apple-like */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        /* Cabeçalho estilo macOS */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 30px;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        /* Logo */
+        .logo {
+            height: 32px;
+            transition: all 0.3s ease;
+        }
+        
+        /* Container de ícones */
+        .nav-icons {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+        
+        /* Ícones no estilo SF Symbols */
+        .icon {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            color: #0071e3;
+            transition: all 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        
+        .icon:hover {
+            color: #147ce3;
+            transform: scale(1.12);
+        }
+        
+        /* Seções no estilo Apple (como seu código original) */
+        .main-container {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-section {
+            position: relative;
+            margin-bottom: 4px;
+        }
+        
+        .card {
+            width: 100vw;
+            height: calc(100vw * (1500/1290));
+            max-height: 1500px;
+            position: relative;
+            overflow: hidden;
+            color: white;
+            margin-left: calc(-50vw + 50%);
+        }
+        
+        .card-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.9);
+            z-index: 1;
+        }
+        
+        .card-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: center;
+            padding-top: 8%;
+            padding-left: 10%;
+            padding-right: 10%;
+        }
+        
+        .card-title {
+            font-size: clamp(28px, 6vw, 80px);
+            font-weight: 700;
+            margin-bottom: clamp(8px, 1.5vw, 20px);
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card-subtitle {
+            font-size: clamp(16px, 2.8vw, 40px);
+            font-weight: 400;
+            margin-bottom: clamp(20px, 5vw, 60px);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            line-height: 1.4;
+        }
+        
+        .buttons-container {
+            display: flex;
+            gap: clamp(10px, 2vw, 30px);
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        .btn {
+            padding: clamp(10px, 1.8vw, 22px) clamp(20px, 3.5vw, 45px);
+            font-size: clamp(14px, 2.2vw, 26px);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        
+        .btn-primary {
+            background-color: #0071e3;
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0062c4;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 600px) {
+            .buttons-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 260px;
+                border-radius: 5px;
+            }
+        }
+        
+        /* Barra deslizante (agora não é mais fixa) */
+        .barra-deslizante {
+            background-color: #000; /* Preto */
+            color: #FFF; /* Texto branco */
+            width: 100%; /* Largura total */
+            height: 32px; /* Altura fina */
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            margin-top: 4px; /* Mesma margem que entre os cards */
+        }
+        
+        .texto-deslize {
+            white-space: nowrap;
+            animation: marquee 12s linear infinite;
+            padding-left: 100%; /* Começa fora da tela */
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Estilos do Hero Slider Moderno */
+        .hero-slider-container {
+            position: relative;
+            width: 100%;
+            height: 70vh;
+            overflow: hidden;
+            background-color: #000;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .slide {
+            position: absolute;
+            width: 80%; /* Largura responsiva */
+            max-width: 300px; /* Máximo para desktop */
+            height: 70vh; /* Altura responsiva */
+            max-height: 500px; /* Máximo para desktop */
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.5s ease;
+            opacity: 0;
+            transform: scale(0.8);
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+        
+        .slide-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        
+        .slide h2 {
+            font-size: clamp(1.5rem, 4vw, 2rem); /* Texto responsivo */
+            font-weight: 600;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .slide.active {
+            opacity: 1;
+            transform: scale(1);
+            z-index: 10;
+        }
+        
+        .slide.prev {
+            opacity: 0.6;
+            transform: translateX(-80%) scale(0.8);
+            z-index: 5;
+        }
+        
+        .slide.next {
+            opacity: 0.6;
+            transform: translateX(80%) scale(0.8);
+            z-index: 5;
+        }
+
+        /* Ajustes para mobile */
+        @media (max-width: 768px) {
+            .slide {
+                width: 85%;
+                height: 60vh;
+                padding: 15px;
+            }
+            
+            .slide.prev {
+                transform: translateX(-70%) scale(0.8);
+            }
+            
+            .slide.next {
+                transform: translateX(70%) scale(0.8);
+            }
+        }
+
+        /* Estilos da seção de informações HiPay */
+        .disclaimer-section {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            font-size: 14px;
+            background-color: #f5f5f7;
+            color: #6e6e73;
+            line-height: 1.5;
+        }
+        
+        .disclaimer-title {
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1d1d1f;
+        }
+        
+        .disclaimer-text {
+            margin-bottom: 24px;
+            color: #6e6e73;
+        }
+        
+        .disclaimer-list {
+            padding-left: 20px;
+            color: #6e6e73;
+        }
+        
+        .disclaimer-list li {
+            margin-bottom: 12px;
+        }
+
+        /* Estilos do Rodapé Mobile */
+        .mobile-footer {
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            padding: 15px 0 0;
+            font-size: 14px;
+        }
+
+        .footer-container {
+            width: 100%;
+            max-width: 100%;
+            padding: 0 15px;
+        }
+
+        /* Accordion Sections */
+        .accordion-section {
+            border-bottom: 1px solid #d2d2d7;
+        }
+
+        .accordion-btn {
+            width: 100%;
+            background: none;
+            border: none;
+            color: #1d1d1f;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 15px 0;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .accordion-btn i {
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-btn.active i {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0 5px;
+        }
+
+        .accordion-content ul {
+            list-style: none;
+            padding-bottom: 15px;
+        }
+
+        .accordion-content li {
+            padding: 10px 0;
+            color: #86868b;
+            border-bottom: 1px solid rgba(210, 210, 215, 0.3);
+        }
+
+        .accordion-content li:last-child {
+            border-bottom: none;
+        }
+
+        /* Apps & Social Section */
+        .apps-social-section {
+            padding: 20px 0;
+            border-bottom: 1px solid #d2d2d7;
+        }
+
+        .section-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
+        .app-badges {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .app-badge {
+            height: 40px;
+            width: auto;
+            max-width: 120px;
+            object-fit: contain;
+            border-radius: 5px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .social-icon {
+            color: #1d1d1f;
+            font-size: 22px;
+        }
+
+        /* Footer Bottom */
+        .footer-bottom {
+            padding: 15px 0 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .country-selector {
+            color: #86868b;
+            font-size: 13px;
+        }
+
+        .copyright {
+            color: #86868b;
+            font-size: 12px;
+        }
+
+        /* iPhone 14 Pro Max specific adjustments */
+        @media only screen and (min-width: 430px) {
+            .footer-container {
+                padding: 0 20px;
+            }
+            
+            .app-badges {
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Logo -->
+        <img src="logo.png" alt="Logo" class="logo">
+        
+        <!-- Ícones Apple Style -->
+        <div class="nav-icons">
+            <!-- Pesquisa -->
+            <svg class="icon" viewBox="0 0 24 24" fill="none" aria-label="Buscar">
+                <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" 
+                      stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M21 21L16.65 16.65" 
+                      stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+            
+            <!-- Conta -->
+            <svg class="icon" viewBox="0 0 24 24" fill="none" aria-label="Conta">
+                <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" 
+                      stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" 
+                      stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+            
+            <!-- Menu -->
+            <svg class="icon" viewBox="0 0 24 24" fill="none" aria-label="Menu">
+                <path d="M4 6H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M4 12H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M4 18H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+        </div>
+    </header>
+    
+    <!-- Seções no estilo Apple (12 seções) -->
+    <div class="main-container">
+        <!-- Seção 1 -->
+        <div class="card-section">
+            <div class="card">
+                <div class="card-background" style="background-image: url('https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1290&q=80');"></div>
+                <div class="card-content">
+                    <h1 class="card-title">Contas e Cartões</h1>
+                    <p class="card-subtitle">Controle seu dinheiro de forma simples e segura.</p>
+                    <div class="buttons-container">
+                        <a href="#" class="btn btn-primary">Saiba mais</a>
+                        <a href="#" class="btn btn-secondary">Proceder</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção 2 -->
+        <div class="card-section">
+            <div class="card">
+                <div class="card-background" style="background-image: url('https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1290&q=80');"></div>
+                <div class="card-content">
+                    <h1 class="card-title">Transferências e Pagamentos</h1>
+                    <p class="card-subtitle">Faça pagamentos e transferências com agilidade e segurança.</p>
+                    <div class="buttons-container">
+                        <a href="#" class="btn btn-primary">Saiba mais</a>
+                        <a href="#" class="btn btn-secondary">Proceder</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção 3 -->
+        <div class="card-section">
+            <div class="card">
+                <div class="card-background" style="background-image: url('https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1290&q=80');"></div>
+                <div class="card-content">
+                    <h1 class="card-title">Crédito e Empréstimos</h1>
+                    <p class="card-subtitle">Dinheiro rápido e fácil, do seu jeito.</p>
+                    <div class="buttons-container">
+                        <a href="#" class="btn btn-primary">Saiba mais</a>
+                        <a href="#" class="btn btn-secondary">Proceder</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção 4 -->
+        <div class="card-section">
+            <div class="card">
+                <div class="card-background" style="background-image: url('https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1290&q=80');"></div>
+                <div class="card-content">
+                    <h1 class="card-title">Poupança e Investimentos</h1>
+                    <p class="card-subtitle">Invista no seu futuro com simplicidade e bons retornos.</p>
+                    <div class="buttons-container">
+                        <a href="#" class="btn btn-primary">Saiba mais</a>
+                        <a href="#" class="btn btn-secondary">Proceder</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção 5 -->
+        <div class="card-section">
+            <div class="card">
+                <div class="card-background" style="background-image: url('https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1290&q=80');"></div>
+                <div class="card-content">
+                    <h1 class="card-title">Seguros</h1>
+                    <p class="card-subtitle">Proteção simples para o que é importante na sua vida.</p>
+                    <div class="buttons-container">
+                        <a href="#" class="btn btn-primary">Saiba mais</a>
+                        <a href="#" class="btn btn-secondary">Proceder</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção 6 -->
+        <div class="card-section">
+            <div class="card">
+                <div class="card-background" style="background-image: url('https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1290&q=80');"></div>
+                <div class="card-content">
+                    <h1 class="card-title">Empresas</h1>
+                    <p class="card-subtitle">O apoio que sua empresa precisa para ir mais longe.</p>
+                    <div class="buttons-container">
+                        <a href="#" class="btn btn-primary">Saiba mais</a>
+                        <a href="#" class="btn btn-secondary">Proceder</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção 7 -->
+        <div class="card-section">
+            <div class="card">
+                <div class="card-background" style="background-image: url('https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1290&q=80');"></div>
+                <div class="card-content">
+                    <h1 class="card-title">Câmbios e Internacional</h1>
+                    <p class="card-subtitle">Compre e venda moedas estrangeiras com taxas competitivas e segurança.</p>
+                    <div class="buttons-container">
+                        <a href="#" class="btn btn-primary">Saiba mais</a>
+                        <a href="#" class="btn btn-secondary">Proceder</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção 8 -->
+        <div class="card-section">
+            <div class="card">
+                <div class="card-background" style="background-image: url('https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1290&q=80');"></div>
+                <div class="card-content">
+                    <h1 class="card-title">Operações no Estrangeiro</h1>
+                    <p class="card-subtitle">Soluções internacionais rápidas para quem não tem fronteiras.</p>
+                    <div class="buttons-container">
+                        <a href="#" class="btn btn-primary">Saiba mais</a>
+                        <a href="#" class="btn btn-secondary">Proceder</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção 9 -->
+        <div class="card-section">
+            <div class="card">
+                <div class="card-background" style="background-image: url('https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1290&q=80');"></div>
+                <div class="card-content">
+                    <h1 class="card-title">Aplicações e Ferramentas</h1>
+                    <p class="card-subtitle">Tudo o que você precisa em um só lugar: praticidade que faz diferença.</p>
+                    <div class="buttons-container">
+                        <a href="#" class="btn btn-primary">Saiba mais</a>
+                        <a href="#" class="btn btn-secondary">Proceder</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção 10 -->
+        <div class="card-section">
+            <div class="card">
+                <div class="card-background" style="background-image: url('https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1290&q=80');"></div>
+                <div class="card-content">
+                    <h1 class="card-title">Suporte e Configurações</h1>
+                    <p class="card-subtitle">Suporte especializado e ajustes personalizados para você.</p>
+                    <div class="buttons-container">
+                        <a href="#" class="btn btn-primary">Saiba mais</a>
+                        <a href="#" class="btn btn-secondary">Proceder</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção 11 -->
+        <div class="card-section">
+            <div class="card">
+                <div class="card-background" style="background-image: url('https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1290&q=80');"></div>
+                <div class="card-content">
+                    <h1 class="card-title">Segurança</h1>
+                    <p class="card-subtitle">Nada é mais importante que sua segurança financeira.</p>
+                    <div class="buttons-container">
+                        <a href="#" class="btn btn-primary">Saiba mais</a>
+                        <a href="#" class="btn btn-secondary">Comprar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção 12 -->
+        <div class="card-section">
+            <div class="card">
+                <div class="card-background" style="background-image: url('https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1290&q=80');"></div>
+                <div class="card-content">
+                    <h1 class="card-title">Funcionalidades Exclusivas</h1>
+                    <p class="card-subtitle">Inovação personalizada para suas necessidades financeiras.</p>
+                    <div class="buttons-container">
+                        <a href="#" class="btn btn-primary">Saiba mais</a>
+                        <a href="#" class="btn btn-secondary">Proceder</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Barra deslizante agora como parte do main-container, após o último card -->
+        <div class="barra-deslizante">
+            <div class="texto-deslize">
+                HiPay.SAS — premiado como referência em inovação digital no setor bancário europeu.
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Slider Moderno adicionado após o main-container -->
+    <div class="hero-slider-container">
+        <div class="slider">
+            <!-- Slide 1 -->
+            <div class="slide active">
+                <video class="slide-video" autoplay muted loop playsinline>
+                    <source src="video1.mp4" type="video/mp4">
+                </video>
+                <h2>Onde estiver</h2>
+            </div>
+            
+            <!-- Slide 2 -->
+            <div class="slide">
+                <video class="slide-video" autoplay muted loop playsinline>
+                    <source src="video2.mp4" type="video/mp4">
+                </video>
+                <h2>quando precisar</h2>
+            </div>
+            
+            <!-- Slide 3 -->
+            <div class="slide">
+                <video class="slide-video" autoplay muted loop playsinline>
+                    <source src="video3.mp4" type="video/mp4">
+                </video>
+                <h2>estamos sempre ao seu lado.</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção de informações HiPay adicionada no final -->
+    <div class="disclaimer-section">
+        <div class="disclaimer-title">HiPay.SAS Digital Banking Solutions</div>
+        <div class="disclaimer-text">
+            Contas HiPay, Cartões HiPay&lt;18, HiPay Business e Créditos HiPay estão sujeitos a aprovação. As funcionalidades HiPay Analytics e HiPay Insights requerem a versão mais recente da aplicação HiPay para iOS, Android ou acesso via web em dispositivos compatíveis. Alguns serviços estão disponíveis apenas para maiores de 18 anos ou clientes empresariais com verificação de identidade completa.
+        </div>
+        
+        <ol class="disclaimer-list">
+            <li>A funcionalidade HiPay Segurança Biométrica foi certificada pelas entidades reguladoras europeias e está disponível em dispositivos com autenticação facial ou por impressão digital. O uso destas funcionalidades implica aceitação dos termos de privacidade e segurança digital.</li>
+            
+            <li>Os serviços Crédito Pessoal, Crédito Habitação, Microcrédito e Leasing Empresarial estão sujeitos à análise de risco, score financeiro e regulamentação em vigor. A concessão de crédito está dependente da aprovação da HiPay SAS e das autoridades financeiras competentes.</li>
+            
+            <li>Algumas funcionalidades HiPay podem não estar disponíveis em todos os dispositivos, regiões ou idiomas. Consulte a Lista Completa de Funcionalidades ou fale com um gestor HiPay para mais informações.</li>
+            
+            <li>A subscrição de planos premium HiPay dá acesso a funcionalidades exclusivas como relatórios automáticos, gestão de múltiplas contas, acesso antecipado a produtos de investimento e suporte prioritário.</li>
+        </ol>
+    </div>
+
+    <!-- Rodapé adicionado aqui -->
+    <footer class="mobile-footer">
+        <div class="footer-container">
+            <!-- Á SUA MEDIDA -->
+            <div class="accordion-section">
+                <button class="accordion-btn">
+                    Á SUA MEDIDA
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content">
+                    <ul>
+                        <li>Particulares</li>
+                        <li>Prestige</li>
+                        <li>Private</li>
+                        <li>Jovens</li>
+                        <li>Geração 55+</li>
+                        <li>Residentes no Exterior</li>
+                        <li>Imigrantes</li>
+                        <li>Empresas</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- DERIVADOS -->
+            <div class="accordion-section">
+                <button class="accordion-btn">
+                    DERIVADOS
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content">
+                    <ul>
+                        <li>Segurança</li>
+                        <li>Banca de Investimento</li>
+                        <li>Imobiliário</li>
+                        <li>Marketplace</li>
+                        <li>Fundação HiPay.SAS</li>
+                        <li>Sustentabilidade</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- O MEU HIPAY -->
+            <div class="accordion-section">
+                <button class="accordion-btn">
+                    O MEU HIPAY
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content">
+                    <ul>
+                        <li>Atendimento Online</li>
+                        <li>Canais Digitais</li>
+                        <li>Dados de Acesso</li>
+                        <li>Atualização de dados</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- SOBRE NÓS -->
+            <div class="accordion-section">
+                <button class="accordion-btn">
+                    SOBRE NÓS
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content">
+                    <ul>
+                        <li>Presença Internacional</li>
+                        <li>Recrutamento</li>
+                        <li>Estágios de Verão</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- TRANSPARÊNCIA -->
+            <div class="accordion-section">
+                <button class="accordion-btn">
+                    TRANSPARÊNCIA
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content">
+                    <ul>
+                        <li>Preçário</li>
+                        <li>Política de privacidade</li>
+                        <li>Política de cookies</li>
+                        <li>Informação contratual e legal</li>
+                        <li>Princípios Orientadores da Venda de Imóveis</li>
+                        <li>Eventos corporativos</li>
+                        <li>Garantia pessoal do estado para jovens</li>
+                        <li>Resolução alternativa de conflitos de consumo</li>
+                        <li>Mediador do crédito</li>
+                        <li>Fundo de Garantia de Depósitos</li>
+                        <li>DMIF II</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- PRODUTOS E SERVIÇOS -->
+            <div class="accordion-section">
+                <button class="accordion-btn">
+                    PRODUTOS E SERVIÇOS
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content">
+                    <ul>
+                        <li>Todas as Contas</li>
+                        <li>Cartões de Crédito</li>
+                        <li>Crédito Pessoal Resposta 24h Úteis</li>
+                        <li>Soluções de Crédito Habitação</li>
+                        <li>Todas as Soluções de Poupança</li>
+                        <li>Fundos de Investimento</li>
+                        <li>Seguros</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- LINKS ÚTEIS -->
+            <div class="accordion-section">
+                <button class="accordion-btn">
+                    LINKS ÚTEIS
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content">
+                    <ul>
+                        <li>Registo</li>
+                        <li>Recuperar dados de acesso</li>
+                        <li>App HiPay.SAS</li>
+                        <li>Contactos</li>
+                        <li>Onde estamos</li>
+                        <li>Ajuda</li>
+                        <li>Candidaturas</li>
+                        <li>Cotações de câmbios</li>
+                        <li>Encargos de conversão cambial</li>
+                        <li>Serviço mudança de conta</li>
+                        <li>Fiscalidade</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- AJUDA E FAQS -->
+            <div class="accordion-section">
+                <button class="accordion-btn">
+                    AJUDA E FAQS
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content">
+                    <ul>
+                        <li>Serviço de Mudança de Conta</li>
+                        <li>Como Reportar uma Fraude</li>
+                        <li>Comunicar Irregularidades</li>
+                        <li>Sugestões e Reclamações</li>
+                        <li>Livro de Reclamações</li>
+                        <li>Extrato de Comissões</li>
+                        <li>Incumprimento de Crédito</li>
+                        <li>Resolução alternativa de Litígios</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Apps e Redes Sociais -->
+            <div class="apps-social-section">
+                <h3 class="section-title">Santander no seu dispositivo</h3>
+                <div class="app-badges">
+                    <!-- App Store -->
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" 
+                         alt="Disponível na App Store" 
+                         class="app-badge">
+                    
+                    <!-- Google Play -->
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" 
+                         alt="Disponível no Google Play" 
+                         class="app-badge">
+                    
+                    <!-- Huawei AppGallery (IMAGEM LOCAL) -->
+                    <img src="huawei-appgallery-badge.png" 
+                         alt="Disponível na AppGallery" 
+                         class="app-badge">
+                </div>
+                
+                <h3 class="section-title">Santander nas redes sociais</h3>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <!-- Rodapé inferior -->
+            <div class="footer-bottom">
+                <div class="country-selector">Portugal</div>
+                <div class="copyright">© 2025 HIPAY.SAS Todos os direitos reservados.</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Script para as seções Apple (se necessário)
+        
+        // Script para o Hero Slider
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            let currentSlide = 0;
+            let isDragging = false;
+            let startPos = 0;
+            let currentTranslate = 0;
+            let prevTranslate = 0;
+            let animationID;
+            
+            // Controle de slides
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.classList.remove('active', 'prev', 'next');
+                    
+                    if (i === index) {
+                        slide.classList.add('active');
+                    } else if (i === (index - 1 + slides.length) % slides.length) {
+                        slide.classList.add('prev');
+                    } else if (i === (index + 1) % slides.length) {
+                        slide.classList.add('next');
+                    }
+                });
+            }
+            
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }
+            
+            function prevSlide() {
+                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                showSlide(currentSlide);
+            }
+            
+            // Inicia o slider
+            showSlide(currentSlide);
+            let slideInterval = setInterval(nextSlide, 3000);
+            
+            // Controle de toque/swipe
+            slides.forEach(slide => {
+                slide.addEventListener('touchstart', touchStart, { passive: true });
+                slide.addEventListener('touchend', touchEnd);
+                slide.addEventListener('touchmove', touchMove, { passive: true });
+            });
+            
+            function touchStart(e) {
+                startPos = e.touches[0].clientX;
+                isDragging = true;
+                clearInterval(slideInterval);
+            }
+            
+            function touchMove(e) {
+                if (!isDragging) return;
+                const currentPosition = e.touches[0].clientX;
+                const diff = currentPosition - startPos;
+                
+                if (diff > 50) {
+                    prevSlide();
+                    isDragging = false;
+                } else if (diff < -50) {
+                    nextSlide();
+                    isDragging = false;
+                }
+            }
+            
+            function touchEnd() {
+                isDragging = false;
+                slideInterval = setInterval(nextSlide, 3000);
+            }
+        });
+
+        // Script para o rodapé accordion
+        document.querySelectorAll('.accordion-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const accordionContent = button.nextElementSibling;
+                const isOpen = button.classList.contains('active');
+                
+                // Fecha todos os outros accordions
+                document.querySelectorAll('.accordion-btn').forEach(btn => {
+                    if (btn !== button) {
+                        btn.classList.remove('active');
+                        btn.nextElementSibling.style.maxHeight = null;
+                    }
+                });
+                
+                // Abre/fecha o atual
+                if (!isOpen) {
+                    button.classList.add('active');
+                    accordionContent.style.maxHeight = accordionContent.scrollHeight + 'px';
+                } else {
+                    button.classList.remove('active');
+                    accordionContent.style.maxHeight = null;
+                }
+            });
+        });
+        
+        // Abre o primeiro accordion por padrão
+        document.querySelector('.accordion-btn').click();
+    </script>
+</body>
+</html>
